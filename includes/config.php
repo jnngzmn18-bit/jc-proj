@@ -14,11 +14,11 @@ if (!defined('LMS_INIT')) {
 // Detect environment (Railway vs Local)
 if (getenv('RAILWAY_ENVIRONMENT')) {
     // Railway (Production)
-    define('DB_HOST', getenv('DB_HOST') ?: 'hopper.proxy.rlwy.net');
+    define('DB_HOST', getenv('DB_HOST') ?: 'mysql.railway.internal');
     define('DB_NAME', getenv('DB_NAME') ?: 'railway');
     define('DB_USER', getenv('DB_USER') ?: 'root');
     define('DB_PASS', getenv('DB_PASS') ?: 'UChjzOquYdNYbVRaEFHGsOiIrEQLAtcx');
-    define('DB_PORT', getenv('DB_PORT') ?: 15632);
+    define('DB_PORT', getenv('DB_PORT') ?: 3306);
 } else {
     // Local (Development)
     define('DB_HOST', '127.0.0.1');

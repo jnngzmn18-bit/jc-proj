@@ -24,7 +24,7 @@ if (getenv('RAILWAY_ENVIRONMENT')) {
     define('DB_HOST', '127.0.0.1');
     define('DB_NAME', 'lms_environmental_science');
     define('DB_USER', 'root');
-    define('DB_PASS', '');
+    define('DB_PASS', 'UChjzOquYdNYbVRaEFHGsOiIrEQLAtcx');
     define('DB_PORT', 3306);
 }
 

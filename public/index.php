@@ -179,7 +179,7 @@ try {
                     $qrcodeDir = __DIR__.'/qrcodes/';
                     if(!is_dir($qrcodeDir)) mkdir($qrcodeDir, 0755, true);
 
-                    $lessonUrl = 'http://'.$_SERVER['HTTP_HOST'].'/public/index.php?page=view_lesson&id='.$lesson_id;
+                    $lessonUrl = APP_URL.'/index.php?page=view_lesson&id='.$lesson_id;
                     $outfile = $qrcodeDir.'lesson_'.$lesson_id.'.png';
                     $qrUrl = 'http://'.$_SERVER['HTTP_HOST'].'/public/qrcodes/lesson_'.$lesson_id.'.png';
 

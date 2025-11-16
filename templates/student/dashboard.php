@@ -181,7 +181,7 @@ $recentGrades = $recentGradesStmt->fetchAll();
     <?php else: ?>
         <div class="grid" id="contentGrid">
             <?php foreach($lessons as $l): 
-                $lessonUrl = 'http://'.$_SERVER['HTTP_HOST'].'/public/index.php?page=view_lesson&id='.$l['id'];
+                $lessonUrl = APP_URL.'/index.php?page=view_lesson&id='.$l['id'];
                 $isCompleted = $l['submission_id'] !== null;
                 $isGraded = $l['grade'] !== null;
                 $statusClass = $isGraded ? 'success' : ($isCompleted ? 'warning' : 'info');

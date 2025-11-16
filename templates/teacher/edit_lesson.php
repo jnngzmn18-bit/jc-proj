@@ -73,7 +73,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $qrcodeDir = __DIR__.'/../../public/qrcodes/';
     if(!is_dir($qrcodeDir)) mkdir($qrcodeDir, 0755, true);
-    $lessonUrl = 'http://'.$_SERVER['HTTP_HOST'].'/public/index.php?page=view_lesson&id='.$id;
+    $lessonUrl = APP_URL.'/index.php?page=view_lesson&id='.$id;
     $outfile = $qrcodeDir.'lesson_'.$id.'.png';
     QRcode::png($lessonUrl, $outfile, 'L', 4, 2);
 

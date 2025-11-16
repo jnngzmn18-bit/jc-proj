@@ -171,7 +171,7 @@ $pendingGrades = array_sum(array_column($lessons, 'pending_grades'));
     <?php else: ?>
         <div class="grid" id="lessonsGrid">
             <?php foreach($lessons as $l): 
-                $lessonUrl = 'http://'.$_SERVER['HTTP_HOST'].'/public/index.php?page=view_lesson&id='.$l['id'];
+                $lessonUrl = APP_URL.'/index.php?page=view_lesson&id='.$l['id'];
                 $hasSubmissions = $l['total_submissions'] > 0;
                 $avgGrade = $l['average_grade'] ? round($l['average_grade'], 1) : null;
             ?>

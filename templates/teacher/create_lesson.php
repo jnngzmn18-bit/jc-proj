@@ -4,39 +4,50 @@ require_role('teacher');
 $me = user();
 
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $title = $_POST['title'];
-    $desc = $_POST['description'];
-    $content = $_POST['content'];
-    $is_activity = isset($_POST['is_activity']) ? 1 : 0;
-    $file_path = null;
+    try {
+        $title = $_POST['title'];
+        $desc = $_POST['description'];
+        $content = $_POST['content'];
+        $is_activity = isset($_POST['is_activity']) ? 1 : 0;
+        $file_path = null;
 
-    // Handle file upload
-    if(!empty($_FILES['file']['name'])) {
-        $uploadDir = __DIR__.'/../../public/uploads/';
-        if(!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
-        $fn = basename($_FILES['file']['name']);
-        $target = $uploadDir.time().'_'.preg_replace('/[^a-zA-Z0-9._-]/', '_', $fn);
-        if(move_uploaded_file($_FILES['file']['tmp_name'], $target)) {
-            $file_path = 'uploads/'.basename($target);
+        // Handle file upload
+        if(!empty($_FILES['file']['name'])) {
+            $uploadDir = __DIR__.'/../../public/uploads/';
+            if(!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
+            $fn = basename($_FILES['file']['name']);
+            $target = $uploadDir.time().'_'.preg_replace('/[^a-zA-Z0-9._-]/', '_', $fn);
+            if(move_uploaded_file($_FILES['file']['tmp_name'], $target)) {
+                $file_path = 'uploads/'.basename($target);
+            } else {
+                throw new Exception('Failed to upload file.');
+            }
         }
+
+        // Insert into lessons table
+        $stmt = $pdo->prepare('INSERT INTO lessons (teacher_id, title, description, content, is_activity, file_path, status) VALUES (?, ?, ?, ?, ?, ?, ?)');
+        $stmt->execute([$me['id'], $title, $desc, $content, $is_activity, $file_path, 'published']);
+        $lesson_id = $pdo->lastInsertId();
+
+        // Insert initial version into content table
+        $stmt = $pdo->prepare('INSERT INTO content (lesson_id, content_type, content, version) VALUES (?, ?, ?, ?)');
+        $stmt->execute([$lesson_id, 'html', $content, 1]);
+
+        $_SESSION['flash_message'] = [
+            'type' => 'success',
+            'message' => 'Lesson/Activity created successfully!'
+        ];
+
+        header('Location: index.php?page=teacher_dashboard');
+        exit;
+    } catch (Exception $e) {
+        $_SESSION['flash_message'] = [
+            'type' => 'error',
+            'message' => 'Something unexpected happened: ' . $e->getMessage()
+        ];
+        // Log the error for debugging
+        error_log('Create lesson error: ' . $e->getMessage());
     }
-
-    // Insert into lessons table
-    $stmt = $pdo->prepare('INSERT INTO lessons (teacher_id, title, description, content, is_activity, file_path, status) VALUES (?, ?, ?, ?, ?, ?, ?)');
-    $stmt->execute([$me['id'], $title, $desc, $content, $is_activity, $file_path, 'published']);
-    $lesson_id = $pdo->lastInsertId();
-
-    // Insert initial version into content table
-    $stmt = $pdo->prepare('INSERT INTO content (lesson_id, content_type, content, version) VALUES (?, ?, ?, ?)');
-    $stmt->execute([$lesson_id, 'html', $content, 1]);
-
-    $_SESSION['flash_message'] = [
-        'type' => 'success',
-        'message' => 'Lesson/Activity created successfully!'
-    ];
-
-    header('Location: index.php?page=teacher_dashboard');
-    exit;
 }
 ?>
 

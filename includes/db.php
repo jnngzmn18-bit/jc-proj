@@ -1,9 +1,9 @@
 <?php
 $DB_HOST = 'hopper.proxy.rlwy.net'; // from Railway
-$DB_PORT = '53461';                 // from Railway
+$DB_PORT = '15632';                 // from Railway
 $DB_NAME = 'railway';               // from Railway
 $DB_USER = 'root';                  // from Railway
-$DB_PASS = 'jnZBSnZBhtvApLHLBJplanxuIRvMLDdE'; // copy the password from Railway dashboard
+$DB_PASS = 'UChjzOquYdNYbVRaEFHGsOiIrEQLAtcx'; // copy the password from Railway dashboard
 
 try {
     $dsn = "mysql:host=$DB_HOST;port=$DB_PORT;dbname=$DB_NAME;charset=utf8mb4";

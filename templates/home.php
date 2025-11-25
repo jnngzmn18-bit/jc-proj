@@ -250,11 +250,14 @@ require_once __DIR__ . '/../includes/auth.php';
 
         @media (max-width: 768px) {
             .nav-buttons {
-                position: relative;
-                top: auto;
-                right: auto;
-                justify-content: center;
-                margin-bottom: var(--space-6);
+                position: absolute;
+                top: var(--space-6);
+                right: var(--space-6);
+                display: flex;
+                gap: var(--space-3);
+                justify-content: flex-end;
+                margin-bottom: 0;
+                z-index: 9999;
             }
 
             .hero-heading {

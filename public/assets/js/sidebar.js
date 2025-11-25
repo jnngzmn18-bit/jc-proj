@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   function toggleSidebar() {
-    if (sidebar && overlay) {
+    if (sidebar && overlay && sidebarToggle) {
       const isOpen = sidebar.classList.contains('open');
       
       if (isOpen) {

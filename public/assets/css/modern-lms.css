@@ -366,11 +366,11 @@ th {
 /* Responsive Design */
 @media (max-width: 768px) {
   .grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 0.5fr;
   }
   
   .grid-2 {
-    grid-template-columns: 1fr;
+    grid-template-columns: 0.5fr;
   }
   
   .card-actions {

@@ -42,7 +42,7 @@ if ($user['role'] === 'admin') {
 ?>
 
 <!-- Sidebar Toggle Button -->
-<button id="sidebar-toggle" class="btn btn-outline-success d-lg-none" aria-label="Toggle Sidebar" title="Toggle Navigation">
+<button id="sidebar-toggle" class="btn btn-outline-success" aria-label="Toggle Sidebar" title="Toggle Navigation">
     <i class="fas fa-bars toggle-icon"></i>
 </button>
 

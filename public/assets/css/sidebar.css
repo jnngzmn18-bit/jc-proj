@@ -133,16 +133,6 @@ body {
   box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 }
 
-/* New styles for sidebar toggle when sidebar is open */
-#sidebar-toggle.open {
-  /* Option 1: Hide toggle button completely */
-  /* display: none; */
-
-  /* Option 2: Move toggle button left to align with open sidebar */
-  left: 260px;
-  transition: left 0.3s ease;
-}
-
 /* Sidebar Overlay */
 #sidebar-overlay {
   position: fixed;

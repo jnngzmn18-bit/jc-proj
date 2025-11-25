@@ -101,13 +101,13 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div class="col-12">
                             <div class="form-group mb-4">
                                 <label for="content" class="form-label">
-                                    <i class="fas fa-code me-2"></i>Content (HTML)
+                                    <i class="fas fa-code me-2"></i>Content
                                 </label>
                                 <textarea class="form-control"
                                           id="content"
                                           name="content"
                                           rows="8"
-                                          placeholder="Enter the lesson content in HTML format"></textarea>
+                                          placeholder="Enter lesson content"></textarea>
                             </div>
                         </div>
                     </div>

@@ -51,6 +51,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (sidebar && overlay) {
       sidebar.classList.add('open');
       overlay.classList.add('active');
+      sidebarToggle.classList.add('open');
+      sidebarToggle.style.display = 'none'; // Hide toggle button explicitly
+      document.body.style.overflow = 'hidden';
       document.body.style.overflow = 'hidden';
     }
   }
@@ -59,6 +62,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (sidebar && overlay) {
       sidebar.classList.remove('open');
       overlay.classList.remove('active');
+      sidebarToggle.classList.remove('open');
+      sidebarToggle.style.display = 'block'; // Show toggle button explicitly
+      document.body.style.overflow = 'auto';
       document.body.style.overflow = 'auto';
     }
   }

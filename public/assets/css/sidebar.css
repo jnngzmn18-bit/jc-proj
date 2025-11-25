@@ -330,6 +330,9 @@ h1, h2, h3, h4, h5, h6 {
     display: block;
   }
   
+  #sidebar-toggle.open {
+    display: none;
+  }
   .sidebar {
     transform: translateX(-100%);
     position: fixed;

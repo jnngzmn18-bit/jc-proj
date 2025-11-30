@@ -41,11 +41,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['qr_data'])) {
                     ');
                     $stmt->execute([$lesson_id, $user['id'], 'qr_scan']);
 
-                    $success_message = "Lesson '" . htmlspecialchars($lesson['title']) . "' has been unlocked successfully!";
-                    $redirect_url = APP_URL . '/index.php?page=view_lesson&id=' . $lesson_id;
+                    // Redirect directly to the lesson after unlocking
+                    header('Location: ' . APP_URL . '/index.php?page=view_lesson&id=' . $lesson_id);
+                    exit;
                 } else {
-                    $success_message = "This lesson is already unlocked.";
-                    $redirect_url = APP_URL . '/index.php?page=view_lesson&id=' . $lesson_id;
+                    // Already unlocked, redirect to lesson
+                    header('Location: ' . APP_URL . '/index.php?page=view_lesson&id=' . $lesson_id);
+                    exit;
                 }
             } else {
                 $error_message = "Invalid lesson QR code.";
@@ -66,19 +68,6 @@ include '../templates/common/header.php';
         <h1 style="text-align: center; margin-bottom: var(--space-6); color: var(--primary-green);">
             📱 QR Code Scanner
         </h1>
-
-        <?php if (isset($success_message)): ?>
-            <div class="alert alert-success" style="margin-bottom: var(--space-6);">
-                <i class="fas fa-check-circle"></i>
-                <?php echo htmlspecialchars($success_message); ?>
-                <?php if (isset($redirect_url)): ?>
-                    <br><br>
-                    <a href="<?php echo htmlspecialchars($redirect_url); ?>" class="btn btn-primary">
-                        View Lesson
-                    </a>
-                <?php endif; ?>
-            </div>
-        <?php endif; ?>
 
         <?php if (isset($error_message)): ?>
             <div class="alert alert-error" style="margin-bottom: var(--space-6);">
@@ -226,4 +215,3 @@ document.addEventListener('DOMContentLoaded', function() {
 </style>
 
 <?php include '../templates/common/footer.php'; ?>
-

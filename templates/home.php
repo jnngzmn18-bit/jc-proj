@@ -260,14 +260,6 @@ require_once __DIR__ . '/../includes/auth.php';
                 z-index: 9999;
             }
 
-            .hero-heading {
-                font-size: 2.5rem;
-            }
-
-            .hero-subheading {
-                font-size: 1rem;
-            }
-
             .features-section {
                 padding: var(--space-8) 0;
             }
@@ -275,10 +267,13 @@ require_once __DIR__ . '/../includes/auth.php';
             .features-heading {
                 font-size: 2rem;
             }
+
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
 
-        /* iPhone 14/15 Responsive Design */
-        @media (max-width: 430px) {
+        @media (max-width: 576px) {
             .hero-section {
                 background-attachment: scroll;
                 background-size: cover;
@@ -346,80 +341,6 @@ require_once __DIR__ . '/../includes/auth.php';
             .feature-title {
                 font-size: 1.125rem;
                 margin-bottom: var(--space-2);
-            }
-        }
-
-        @media (max-width: 393px) {
-            .hero-section {
-                background-attachment: scroll;
-                background-size: cover;
-                background-position: center;
-            }
-
-            .hero-content {
-                padding: var(--space-4);
-            }
-
-            .hero-heading {
-                font-size: 1.75rem;
-                margin-bottom: var(--space-3);
-            }
-
-            .hero-subheading {
-                font-size: 0.8rem;
-                margin-bottom: var(--space-4);
-            }
-
-            .hero-button {
-                padding: var(--space-2) var(--space-4);
-                font-size: 0.9rem;
-            }
-
-            .nav-buttons {
-                top: var(--space-3);
-                right: var(--space-3);
-                flex-direction: column;
-                gap: var(--space-1);
-            }
-
-            .nav-button {
-                padding: var(--space-1) var(--space-3);
-                font-size: 0.8rem;
-            }
-
-            .features-section {
-                padding: var(--space-4) 0;
-            }
-
-            .features-container {
-                padding: 0 var(--space-3);
-            }
-
-            .features-heading {
-                font-size: 1.5rem;
-                margin-bottom: var(--space-6);
-            }
-
-            .features-grid {
-                gap: var(--space-4);
-            }
-
-            .feature-card {
-                padding: var(--space-3);
-            }
-
-            .feature-icon {
-                font-size: 2rem;
-                margin-bottom: var(--space-2);
-            }
-
-            .feature-title {
-                font-size: 1rem;
-                margin-bottom: var(--space-1);
-            }
-
-            .feature-description {
-                font-size: 0.875rem;
             }
         }
     </style>

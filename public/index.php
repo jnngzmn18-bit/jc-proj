@@ -122,6 +122,11 @@ try {
             require __DIR__ . '/../templates/teacher/view_submissions.php';
             break;
 
+        case 'teacher_lessons':
+            require_role('teacher');
+            require __DIR__ . '/../templates/teacher/lessons.php';
+            break;
+
         case 'get_submission_activity':
             require_login();
             if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {

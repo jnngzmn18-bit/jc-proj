@@ -541,24 +541,11 @@ function showQR(url, title) {
 }
 
 function downloadQR(url, title) {
-    // Create a temporary canvas to generate downloadable QR code
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = 200;
-    canvas.height = 200;
+    // Get the canvas from the already rendered QR code in the modal
+    const qrDisplay = document.getElementById('qr-code-display');
+    const canvas = qrDisplay ? qrDisplay.querySelector('canvas') : null;
 
-    // Generate QR code on canvas
-    const qr = new QRCode(canvas, {
-        text: url,
-        width: 200,
-        height: 200,
-        colorDark: "#5b3e2b",
-        colorLight: "#ffffff",
-        correctLevel: QRCode.CorrectLevel.M
-    });
-
-    // Wait a bit for QR code to render, then download
-    setTimeout(() => {
+    if (canvas) {
         canvas.toBlob(function(blob) {
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
@@ -566,7 +553,10 @@ function downloadQR(url, title) {
             link.click();
             URL.revokeObjectURL(link.href);
         });
-    }, 100);
+        } else {
+            console.error('QR code canvas not found');
+            alert('Error: QR code not ready for download. Please try again.');
+    }
 }
 
 function closeQRModal() {

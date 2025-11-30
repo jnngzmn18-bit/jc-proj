@@ -103,11 +103,6 @@ $pendingGrades = array_sum(array_column($lessons, 'pending_grades'));
         <a href="index.php?page=teacher_submissions" class="btn btn-secondary">
             📝 View All Submissions (<?php echo $pendingGrades; ?> pending)
         </a>
-        <?php if ($totalLessons > 0): ?>
-            <button onclick="generateAllQRCodes(this)" class="btn btn-secondary">
-                📱 Generate QR Codes
-            </button>
-        <?php endif; ?>
     </div>
 </div>
 

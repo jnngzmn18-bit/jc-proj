@@ -5,18 +5,20 @@ require_role('student');
 
 $me = user();
 
-// Get all available lessons with submission status
+// Get all available lessons with submission status and unlock status
 $stmt = $pdo->prepare('
     SELECT l.*, u.name AS teacher_name,
            s.id as submission_id, s.grade, s.feedback, s.status as submission_status,
-           s.submitted_at
-    FROM lessons l 
-    JOIN users u ON l.teacher_id = u.id 
+           s.submitted_at,
+           ul.id as unlocked_id, ul.unlocked_at, ul.unlock_method
+    FROM lessons l
+    JOIN users u ON l.teacher_id = u.id
     LEFT JOIN submissions s ON l.id = s.lesson_id AND s.student_id = ?
+    LEFT JOIN lesson_unlocks ul ON l.id = ul.lesson_id AND ul.student_id = ?
     WHERE l.status = "published"
     ORDER BY l.created_at DESC
 ');
-$stmt->execute([$me['id']]);
+$stmt->execute([$me['id'], $me['id']]);
 $lessons = $stmt->fetchAll();
 
 // Calculate student statistics
@@ -105,6 +107,9 @@ $recentGrades = $recentGradesStmt->fetchAll();
         <a href="index.php?page=student_grades" class="btn btn-primary">
             📊 View My Grades
         </a>
+        <a href="qr_scan.php" class="btn btn-info">
+            📱 QR Scanner
+        </a>
         <a href="#lessons-section" class="btn btn-secondary" onclick="scrollToLessons()">
             📚 Browse Lessons
         </a>
@@ -180,25 +185,44 @@ $recentGrades = $recentGradesStmt->fetchAll();
         </div>
     <?php else: ?>
         <div class="grid" id="contentGrid">
-            <?php foreach($lessons as $l): 
+            <?php foreach($lessons as $l):
                 $lessonUrl = APP_URL.'/index.php?page=view_lesson&id='.$l['id'];
+                $isUnlocked = $l['unlocked_id'] !== null;
                 $isCompleted = $l['submission_id'] !== null;
                 $isGraded = $l['grade'] !== null;
                 $statusClass = $isGraded ? 'success' : ($isCompleted ? 'warning' : 'info');
                 $statusText = $isGraded ? 'Graded' : ($isCompleted ? 'Submitted' : 'Not Started');
+                $cardOpacity = $isUnlocked ? '1' : '0.6';
+                $cardClass = $isUnlocked ? 'content-card' : 'content-card locked-card';
             ?>
-            <div class="card content-card" 
+            <div class="card <?php echo $cardClass; ?>"
                  data-type="<?php echo $l['is_activity'] ? 'activity' : 'lesson'; ?>"
-                 data-status="<?php echo $isGraded ? 'graded' : ($isCompleted ? 'completed' : 'incomplete'); ?>">
-                
+                 data-status="<?php echo $isGraded ? 'graded' : ($isCompleted ? 'completed' : 'incomplete'); ?>"
+                 data-locked="<?php echo $isUnlocked ? 'false' : 'true'; ?>"
+                 style="opacity: <?php echo $cardOpacity; ?>;">
+
+                <!-- Lock overlay for locked lessons -->
+                <?php if (!$isUnlocked): ?>
+                    <div class="lock-overlay">
+                        <div class="lock-icon">🔒</div>
+                        <div class="lock-text">Scan QR Code to Unlock</div>
+                    </div>
+                <?php endif; ?>
+
                 <!-- Header with status -->
                 <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: var(--space-3);">
                     <span class="badge badge-<?php echo $l['is_activity'] ? 'info' : 'primary'; ?>">
                         <?php echo $l['is_activity'] ? '📝 Activity' : '📚 Lesson'; ?>
                     </span>
-                    <span class="badge badge-<?php echo $statusClass; ?>">
-                        <?php echo $statusText; ?>
-                    </span>
+                    <?php if ($isUnlocked): ?>
+                        <span class="badge badge-<?php echo $statusClass; ?>">
+                            <?php echo $statusText; ?>
+                        </span>
+                    <?php else: ?>
+                        <span class="badge badge-secondary">
+                            🔒 Locked
+                        </span>
+                    <?php endif; ?>
                 </div>
 
                 <h4><?php echo htmlspecialchars($l['title']); ?></h4>
@@ -209,38 +233,40 @@ $recentGrades = $recentGradesStmt->fetchAll();
                 <!-- Teacher and Grade Info -->
                 <div class="card-meta" style="margin-bottom: var(--space-4);">
                     <span>👨‍🏫 <?php echo htmlspecialchars($l['teacher_name']); ?></span>
-                    <?php if ($isGraded): ?>
-                        <span style="color: <?php 
-                            echo $l['grade'] >= 90 ? 'var(--success)' : 
-                                ($l['grade'] >= 80 ? 'var(--info)' : 
-                                ($l['grade'] >= 70 ? 'var(--warning)' : 'var(--error)')); 
+                    <?php if ($isUnlocked && $isGraded): ?>
+                        <span style="color: <?php
+                            echo $l['grade'] >= 90 ? 'var(--success)' :
+                                ($l['grade'] >= 80 ? 'var(--info)' :
+                                ($l['grade'] >= 70 ? 'var(--warning)' : 'var(--error)'));
                         ?>;">
                             📊 Grade: <?php echo $l['grade']; ?>%
                         </span>
-                    <?php elseif ($isCompleted): ?>
+                    <?php elseif ($isUnlocked && $isCompleted): ?>
                         <span style="color: var(--warning);">⏳ Awaiting Grade</span>
                     <?php endif; ?>
                 </div>
 
                 <div class="card-actions">
-                    <a href="index.php?page=view_lesson&id=<?php echo $l['id']; ?>" class="btn btn-sm btn-primary">
-                        View
-                    </a>
-                    
-                    <?php if ($l['is_activity'] && !$isCompleted): ?>
-                        <a href="index.php?page=submit_activity&id=<?php echo $l['id']; ?>" class="btn btn-sm btn-success">
-                            Submit
+                    <?php if ($isUnlocked): ?>
+                        <a href="index.php?page=view_lesson&id=<?php echo $l['id']; ?>" class="btn btn-sm btn-primary">
+                            View
                         </a>
-                    <?php elseif ($l['is_activity'] && $isCompleted): ?>
-                        <a href="index.php?page=submit_activity&id=<?php echo $l['id']; ?>" class="btn btn-sm btn-secondary">
-                            View Submission
-                        </a>
+
+                        <?php if ($l['is_activity'] && !$isCompleted): ?>
+                            <a href="index.php?page=submit_activity&id=<?php echo $l['id']; ?>" class="btn btn-sm btn-success">
+                                Submit
+                            </a>
+                        <?php elseif ($l['is_activity'] && $isCompleted): ?>
+                            <a href="index.php?page=submit_activity&id=<?php echo $l['id']; ?>" class="btn btn-sm btn-secondary">
+                                View Submission
+                            </a>
+                        <?php endif; ?>
+
+                        <button onclick="showQR('<?php echo $lessonUrl; ?>', '<?php echo htmlspecialchars($l['title']); ?>')"
+                                class="btn btn-sm btn-secondary">
+                            QR Code
+                        </button>
                     <?php endif; ?>
-                    
-                    <button onclick="showQR('<?php echo $lessonUrl; ?>', '<?php echo htmlspecialchars($l['title']); ?>')" 
-                            class="btn btn-sm btn-secondary">
-                        QR Code
-                    </button>
                 </div>
             </div>
             <?php endforeach; ?>
@@ -438,6 +464,51 @@ $recentGrades = $recentGradesStmt->fetchAll();
     max-width: none;
 }
 
+/* Lock overlay styles */
+.lock-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.9);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-lg);
+    z-index: 10;
+    pointer-events: none;
+}
+
+.lock-icon {
+    font-size: 3rem;
+    margin-bottom: var(--space-2);
+    opacity: 0.7;
+}
+
+.lock-text {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--gray-700);
+    text-align: center;
+    background: rgba(255, 255, 255, 0.9);
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--gray-300);
+}
+
+/* Locked card styles */
+.locked-card {
+    position: relative;
+    filter: grayscale(20%);
+    pointer-events: none;
+}
+
+.locked-card .card-actions {
+    pointer-events: auto;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .qr-modal-content {
@@ -464,6 +535,18 @@ $recentGrades = $recentGradesStmt->fetchAll();
         text-align: center;
         justify-content: center;
     }
+
+    .lock-overlay {
+        padding: var(--space-4);
+    }
+
+    .lock-icon {
+        font-size: 2.5rem;
+    }
+
+    .lock-text {
+        font-size: 0.75rem;
+    }
 }
 </style>
 
@@ -475,6 +558,7 @@ function filterContent() {
     cards.forEach(card => {
         const type = card.getAttribute('data-type');
         const status = card.getAttribute('data-status');
+        const locked = card.getAttribute('data-locked') === 'true';
         let show = false;
 
         switch(filter) {
@@ -488,10 +572,10 @@ function filterContent() {
                 show = type === 'activity';
                 break;
             case 'incomplete':
-                show = status === 'incomplete';
+                show = status === 'incomplete' && !locked;
                 break;
             case 'graded':
-                show = status === 'graded';
+                show = status === 'graded' && !locked;
                 break;
         }
 

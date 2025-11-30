@@ -113,7 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['answer']) && $me['rol
                 'type' => 'success',
                 'message' => 'Your submission has been saved successfully.'
             ];
-            header('Location: index.php?page=view_lesson&id=' . $lesson_id);
+            header('Location: index.php?page=student_dashboard');
             exit;
         } catch (Exception $e) {
             error_log("Submission error: " . $e->getMessage());

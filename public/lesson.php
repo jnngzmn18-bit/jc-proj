@@ -31,6 +31,22 @@ try {
         header('Location: index.php?page=' . ($me['role'] === 'teacher' ? 'teacher_dashboard' : 'student_dashboard'));
         exit;
     }
+
+    // Check if student has unlocked this lesson
+    if ($me['role'] === 'student') {
+        $stmt = $pdo->prepare('SELECT id FROM lesson_unlocks WHERE lesson_id = ? AND student_id = ?');
+        $stmt->execute([$lesson_id, $me['id']]);
+        $unlock = $stmt->fetch();
+
+        if (!$unlock) {
+            $_SESSION['flash_message'] = [
+                'type' => 'error',
+                'message' => 'This lesson is locked. Please scan the QR code to unlock it first.'
+            ];
+            header('Location: index.php?page=student_dashboard');
+            exit;
+        }
+    }
     
     // Get submission if student and activity
     $submission = null;

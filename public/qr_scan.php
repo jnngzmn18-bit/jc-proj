@@ -35,15 +35,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['qr_data'])) {
 
                 if (!$existing_unlock) {
                     // Unlock the lesson
-                    $stmt = $pdo->prepare('
-                        INSERT INTO lesson_unlocks (lesson_id, student_id, unlock_method, unlocked_at)
-                        VALUES (?, ?, ?, NOW())
-                    ');
-                    $stmt->execute([$lesson_id, $user['id'], 'qr_scan']);
+                    try {
+                        $stmt = $pdo->prepare('
+                            INSERT INTO lesson_unlocks (lesson_id, student_id, unlock_method, unlocked_at)
+                            VALUES (?, ?, ?, NOW())
+                        ');
+                        $stmt->execute([$lesson_id, $user['id'], 'qr_scan']);
 
-                    // Redirect directly to the lesson after unlocking
-                    header('Location: ' . APP_URL . '/index.php?page=view_lesson&id=' . $lesson_id);
-                    exit;
+                        // Redirect directly to the lesson after unlocking
+                        header('Location: index.php?page=view_lesson&id=' . $lesson_id);
+                        exit;
+                    } catch (Exception $e) {
+                        error_log("Unlock insert error: " . $e->getMessage());
+                        $error_message = "Failed to unlock lesson. Please try again.";
+                    }
                 } else {
                     // Already unlocked, redirect to lesson
                     header('Location: ' . APP_URL . '/index.php?page=view_lesson&id=' . $lesson_id);

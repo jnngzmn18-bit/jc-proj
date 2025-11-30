@@ -47,14 +47,9 @@ function require_login() {
  */
 function require_role($required_role) {
     require_login();
-    
+
     $user = user();
     if (!$user || $user['role'] !== $required_role) {
-        $_SESSION['flash_message'] = [
-            'type' => 'error',
-            'message' => 'Access denied. Insufficient permissions.'
-        ];
-        
         // Redirect based on user's actual role
         if ($user) {
             switch($user['role']) {

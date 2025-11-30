@@ -340,9 +340,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $me['role'] === 'student') {
 
 <script>
 function gradeSubmission(submissionId) {
-    // This function would open a grading modal or redirect to grading page
-    // For now, we'll redirect to the grading page
-    window.location.href = `index.php?page=grade_submission&id=${submissionId}`;
+    // Redirect to the dedicated view submission page for grading
+    window.location.href = `index.php?page=view_submission&id=${submissionId}`;
 }
 
 document.addEventListener('DOMContentLoaded', function() {

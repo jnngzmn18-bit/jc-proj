@@ -28,19 +28,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['qr_data'])) {
             $lesson = $stmt->fetch();
 
             if ($lesson) {
+                error_log("QR Scan: Found lesson ID $lesson_id for user {$user['id']}");
                 // Check if already unlocked
                 $stmt = $pdo->prepare('SELECT id FROM lesson_unlocks WHERE lesson_id = ? AND student_id = ?');
                 $stmt->execute([$lesson_id, $user['id']]);
                 $existing_unlock = $stmt->fetch();
 
                 if (!$existing_unlock) {
+                    error_log("QR Scan: Lesson not unlocked yet, attempting to insert");
                     // Unlock the lesson
                     try {
                         $stmt = $pdo->prepare('
                             INSERT INTO lesson_unlocks (lesson_id, student_id, unlock_method, unlocked_at)
                             VALUES (?, ?, ?, NOW())
                         ');
-                        $stmt->execute([$lesson_id, $user['id'], 'qr_scan']);
+                        $result = $stmt->execute([$lesson_id, $user['id'], 'qr_scan']);
+                        error_log("QR Scan: Insert result: " . ($result ? 'success' : 'failed'));
 
                         // Redirect directly to the lesson after unlocking
                         header('Location: index.php?page=view_lesson&id=' . $lesson_id);
@@ -50,11 +53,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['qr_data'])) {
                         $error_message = "Failed to unlock lesson. Please try again.";
                     }
                 } else {
+                    error_log("QR Scan: Lesson already unlocked");
                     // Already unlocked, redirect to lesson
                     header('Location: ' . APP_URL . '/index.php?page=view_lesson&id=' . $lesson_id);
                     exit;
                 }
             } else {
+                error_log("QR Scan: Invalid lesson QR code for ID $lesson_id");
                 $error_message = "Invalid lesson QR code.";
             }
         } else {

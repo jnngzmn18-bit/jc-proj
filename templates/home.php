@@ -276,6 +276,152 @@ require_once __DIR__ . '/../includes/auth.php';
                 font-size: 2rem;
             }
         }
+
+        /* iPhone 14/15 Responsive Design */
+        @media (max-width: 430px) {
+            .hero-section {
+                background-attachment: scroll;
+                background-size: cover;
+                background-position: center;
+            }
+
+            .hero-content {
+                padding: var(--space-6);
+            }
+
+            .hero-heading {
+                font-size: 2rem;
+                margin-bottom: var(--space-4);
+            }
+
+            .hero-subheading {
+                font-size: 0.9rem;
+                margin-bottom: var(--space-6);
+                max-width: 100%;
+            }
+
+            .hero-button {
+                padding: var(--space-3) var(--space-6);
+                font-size: 1rem;
+            }
+
+            .nav-buttons {
+                top: var(--space-4);
+                right: var(--space-4);
+                gap: var(--space-2);
+            }
+
+            .nav-button {
+                padding: var(--space-2) var(--space-4);
+                font-size: 0.9rem;
+            }
+
+            .features-section {
+                padding: var(--space-6) 0;
+            }
+
+            .features-container {
+                padding: 0 var(--space-4);
+            }
+
+            .features-heading {
+                font-size: 1.75rem;
+                margin-bottom: var(--space-8);
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: var(--space-6);
+            }
+
+            .feature-card {
+                padding: var(--space-4);
+            }
+
+            .feature-icon {
+                font-size: 2.5rem;
+                margin-bottom: var(--space-3);
+            }
+
+            .feature-title {
+                font-size: 1.125rem;
+                margin-bottom: var(--space-2);
+            }
+        }
+
+        @media (max-width: 393px) {
+            .hero-section {
+                background-attachment: scroll;
+                background-size: cover;
+                background-position: center;
+            }
+
+            .hero-content {
+                padding: var(--space-4);
+            }
+
+            .hero-heading {
+                font-size: 1.75rem;
+                margin-bottom: var(--space-3);
+            }
+
+            .hero-subheading {
+                font-size: 0.8rem;
+                margin-bottom: var(--space-4);
+            }
+
+            .hero-button {
+                padding: var(--space-2) var(--space-4);
+                font-size: 0.9rem;
+            }
+
+            .nav-buttons {
+                top: var(--space-3);
+                right: var(--space-3);
+                flex-direction: column;
+                gap: var(--space-1);
+            }
+
+            .nav-button {
+                padding: var(--space-1) var(--space-3);
+                font-size: 0.8rem;
+            }
+
+            .features-section {
+                padding: var(--space-4) 0;
+            }
+
+            .features-container {
+                padding: 0 var(--space-3);
+            }
+
+            .features-heading {
+                font-size: 1.5rem;
+                margin-bottom: var(--space-6);
+            }
+
+            .features-grid {
+                gap: var(--space-4);
+            }
+
+            .feature-card {
+                padding: var(--space-3);
+            }
+
+            .feature-icon {
+                font-size: 2rem;
+                margin-bottom: var(--space-2);
+            }
+
+            .feature-title {
+                font-size: 1rem;
+                margin-bottom: var(--space-1);
+            }
+
+            .feature-description {
+                font-size: 0.875rem;
+            }
+        }
     </style>
 </head>
 <body>

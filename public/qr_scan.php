@@ -12,6 +12,7 @@ $page_title = "QR Code Scanner";
 
 // Handle QR scan submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['qr_data'])) {
+    error_log("QR Scan: POST received with qr_data: " . $_POST['qr_data']);
     $qr_data = trim($_POST['qr_data']);
 
     // Parse the QR data - should be in format: APP_URL/index.php?page=view_lesson&id=123

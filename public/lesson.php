@@ -39,12 +39,26 @@ try {
         $unlock = $stmt->fetch();
 
         if (!$unlock) {
-            $_SESSION['flash_message'] = [
-                'type' => 'error',
-                'message' => 'This lesson is locked. Please scan the QR code to unlock it first.'
-            ];
-            header('Location: index.php?page=student_dashboard');
-            exit;
+            // Auto-unlock the lesson
+            try {
+                $stmt = $pdo->prepare('
+                    INSERT INTO lesson_unlocks (lesson_id, student_id, unlock_method, unlocked_at)
+                    VALUES (?, ?, ?, NOW())
+                ');
+                $stmt->execute([$lesson_id, $me['id'], 'direct_access']);
+                $_SESSION['flash_message'] = [
+                    'type' => 'success',
+                    'message' => 'Lesson automatically unlocked via direct access.'
+                ];
+            } catch (Exception $e) {
+                error_log("Auto unlock error: " . $e->getMessage());
+                $_SESSION['flash_message'] = [
+                    'type' => 'error',
+                    'message' => 'Failed to unlock lesson automatically.'
+                ];
+                header('Location: index.php?page=student_dashboard');
+                exit;
+            }
         }
     }
     

@@ -415,3 +415,101 @@ h1, h2, h3, h4, h5, h6 {
 .modal-footer {
   border-top: 1px solid #c2e0c2;
 }
+
+/* iPhone 14/15 Responsive Design */
+@media (max-width: 430px) {
+  .sidebar {
+    width: 220px;
+    padding: 1rem 0.75rem;
+  }
+
+  .logo {
+    padding: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .logo span {
+    font-size: 1.1rem;
+  }
+
+  .nav-link {
+    padding: 0.6rem 0.75rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .main-content {
+    margin-left: 220px;
+    padding: 1.5rem 1rem;
+  }
+
+  #sidebar-toggle {
+    top: 0.75rem;
+    left: 0.75rem;
+    padding: 0.4rem 0.6rem;
+    font-size: 1.1rem;
+  }
+
+  .card, .box {
+    padding: 1.5rem;
+  }
+
+  .card-body {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 393px) {
+  .sidebar {
+    width: 200px;
+    padding: 0.75rem 0.5rem;
+  }
+
+  .logo {
+    padding: 0.4rem;
+    margin-bottom: 1rem;
+  }
+
+  .logo span {
+    font-size: 1rem;
+  }
+
+  .nav-link {
+    padding: 0.5rem 0.6rem;
+    margin-bottom: 0.4rem;
+    font-size: 0.85rem;
+  }
+
+  .nav-link i {
+    font-size: 1rem;
+  }
+
+  .main-content {
+    margin-left: 200px;
+    padding: 1rem 0.75rem;
+  }
+
+  #sidebar-toggle {
+    top: 0.5rem;
+    left: 0.5rem;
+    padding: 0.3rem 0.5rem;
+    font-size: 1rem;
+  }
+
+  .card, .box {
+    padding: 1rem;
+  }
+
+  .card-body {
+    padding: 0.75rem;
+  }
+
+  .table {
+    font-size: 0.8rem;
+  }
+
+  .btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+  }
+}

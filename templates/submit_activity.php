@@ -48,7 +48,7 @@ if ($view_submission && $me['role'] === 'teacher') {
 
 // Check if already submitted
 $stmt = $pdo->prepare('SELECT * FROM submissions WHERE lesson_id = ? AND student_id = ?');
-$stmt->execute([$lesson_id, $me['id']]);
+$stmt->execute([$activity_id, $me['id']]);
 $existing_submission = $stmt->fetch();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $me['role'] === 'student') {
@@ -73,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $me['role'] === 'student') {
         $message = 'Submission updated successfully!';
     } else {
         // Create new submission
-        $stmt = $pdo->prepare('INSERT INTO submissions (activity_id, student_id, content, file_path, submitted_at) VALUES (?, ?, ?, ?, NOW())');
+        $stmt = $pdo->prepare('INSERT INTO submissions (lesson_id, student_id, content, file_path, submitted_at) VALUES (?, ?, ?, ?, NOW())');
         $stmt->execute([$activity_id, $me['id'], $content, $file_path]);
         $message = 'Submission created successfully!';
     }

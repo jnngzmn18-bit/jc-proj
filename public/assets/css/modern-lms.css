@@ -562,3 +562,141 @@ th {
     font-size: 1.5rem;
   }
 }
+
+/* iPhone 14/15 Responsive Design */
+@media (max-width: 430px) {
+  .container {
+    padding: 0 var(--space-2);
+  }
+
+  .box {
+    padding: var(--space-4);
+    margin-bottom: var(--space-4);
+  }
+
+  .card {
+    padding: var(--space-4);
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  .grid-2 {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  .grid-3 {
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+  }
+
+  .btn {
+    padding: var(--space-2) var(--space-4);
+    font-size: 0.8rem;
+  }
+
+  .card-meta {
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .card-actions {
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  h1 { font-size: 1.75rem; }
+  h2 { font-size: 1.5rem; }
+  h3 { font-size: 1.25rem; }
+  h4 { font-size: 1.125rem; }
+
+  .auth-card {
+    padding: var(--space-4);
+    max-width: 100%;
+  }
+
+  .auth-header h1 {
+    font-size: 1.25rem;
+  }
+
+  .qr-modal-content {
+    padding: var(--space-4);
+    max-width: 90%;
+  }
+}
+
+@media (max-width: 393px) {
+  .container {
+    padding: 0 var(--space-1);
+  }
+
+  .box {
+    padding: var(--space-3);
+    margin-bottom: var(--space-3);
+  }
+
+  .card {
+    padding: var(--space-3);
+  }
+
+  .grid {
+    gap: var(--space-3);
+  }
+
+  .grid-2 {
+    gap: var(--space-3);
+  }
+
+  .grid-3 {
+    gap: var(--space-1);
+  }
+
+  .btn {
+    padding: var(--space-1) var(--space-3);
+    font-size: 0.75rem;
+  }
+
+  .badge {
+    padding: var(--space-1) var(--space-2);
+    font-size: 0.7rem;
+  }
+
+  .form-control {
+    padding: var(--space-2);
+    font-size: 0.8rem;
+  }
+
+  .alert {
+    padding: var(--space-3);
+  }
+
+  h1 { font-size: 1.5rem; }
+  h2 { font-size: 1.25rem; }
+  h3 { font-size: 1.125rem; }
+  h4 { font-size: 1rem; }
+  h5 { font-size: 0.9rem; }
+  h6 { font-size: 0.8rem; }
+
+  .auth-card {
+    padding: var(--space-3);
+  }
+
+  .auth-header h1 {
+    font-size: 1.125rem;
+  }
+
+  .qr-modal-content {
+    padding: var(--space-3);
+  }
+
+  table {
+    font-size: 0.8rem;
+  }
+
+  th, td {
+    padding: var(--space-2);
+  }
+}

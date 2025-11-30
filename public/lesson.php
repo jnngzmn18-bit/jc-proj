@@ -254,15 +254,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['answer']) && $me['rol
             <div class="box">
                 <h4 style="margin-bottom: var(--spacing-lg);">🚀 Quick Actions</h4>
                 <div class="d-flex flex-column gap-3">
-                    <button onclick="showQR('<?php echo APP_URL.'/index.php?page=view_lesson&id='.$lesson['id']; ?>', '<?php echo htmlspecialchars($lesson['title']); ?>')"
-                            class="btn btn-secondary">
-                        <i class="fas fa-qrcode me-2"></i>Generate QR Code
-                    </button>
-                    
                     <a href="javascript:window.print()" class="btn btn-secondary">
                         <i class="fas fa-print me-2"></i>Print Lesson
                     </a>
-                    
+
                     <a href="index.php?page=<?php echo $me['role']; ?>_dashboard" class="btn btn-outline-primary">
                         <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
                     </a>

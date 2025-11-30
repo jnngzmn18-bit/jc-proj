@@ -46,10 +46,6 @@ try {
                     VALUES (?, ?, ?, NOW())
                 ');
                 $stmt->execute([$lesson_id, $me['id'], 'direct_access']);
-                $_SESSION['flash_message'] = [
-                    'type' => 'success',
-                    'message' => 'Lesson automatically unlocked via direct access.'
-                ];
             } catch (Exception $e) {
                 error_log("Auto unlock error: " . $e->getMessage());
                 $_SESSION['flash_message'] = [
